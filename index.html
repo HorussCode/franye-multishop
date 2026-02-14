@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Franye Multishop | Catálogo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="notification-container"></div>
+
+    <div id="btn-carrito-flotante" onclick="toggleCarrito()">
+        🛒 <span id="contador-carrito">0</span>
+    </div>
+
+    <header>
+        <div class="logo-container">
+            <h1 class="logo-elegante">Franye Multishop</h1>
+        </div>
+        <p class="subtitulo">¡Estilo y calidad a un clic!</p>
+    </header>
+
+    <section class="destacados-seccion">
+        <h2 style="text-align: center; color: var(--dorado); font-family: 'Cinzel', serif; margin-bottom: 10px;">🔥 Destacados</h2>
+        <div class="carrusel-container">
+            <button class="flecha-carrusel prev" onclick="moverCarrusel(-250)">&#10094;</button>
+            <div class="carrusel-track" id="carrusel-destacados"></div>
+            <button class="flecha-carrusel next" onclick="moverCarrusel(250)">&#10095;</button>
+        </div>
+    </section>
+
+    <div class="buscador-container">
+        <input type="text" id="input-busqueda" placeholder="Buscar producto...">
+        <select id="filtro-categoria">
+            <option value="todos">Todas las categorías</option>
+            <option value="Tecnología">Tecnología</option>
+            <option value="Deporte">Deporte</option>
+            <option value="Herramientas">Herramientas</option>
+            <option value="Salud">Salud</option>
+            <option value="Hogar">Hogar</option>
+        </select>
+    </div>
+
+    <main id="contenedor-productos" class="grid-productos"></main>
+
+    <div id="modal-producto" class="modal">
+        <div class="modal-contenido">
+            <span class="cerrar-modal" onclick="cerrarModal()">&times;</span>
+            <div id="detalle-producto"></div>
+        </div>
+    </div>
+
+    <div id="carrito-lateral" class="carrito-hide">
+        <div class="carrito-header">
+            <h3>Tu Pedido</h3>
+            <span style="cursor:pointer; font-size: 2rem;" onclick="toggleCarrito()">&times;</span>
+        </div>
+        <div id="items-carrito"></div>
+        <div class="carrito-footer">
+            <p style="font-size: 0.75rem; color: var(--dorado-brillante); margin-bottom: 10px;">Tasa BCV - Pagos Pago Móvil o Zelle</p>
+            <h4 style="margin-bottom: 15px;">Total: $<span id="total-carrito">0</span></h4>
+            <button class="btn-comprar" onclick="enviarPedidoWhatsApp()">Finalizar por WhatsApp</button>
+        </div>
+    </div>
+
+    <div class="whatsapp-flotante-container">
+        <span class="mensaje-ayuda">¿Dudas?</span>
+        <a href="https://wa.me/584145611937" class="btn-whatsapp-fijo" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+        </a>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
