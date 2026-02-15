@@ -3,7 +3,7 @@
     const SHEET_ID = '16c9gR2HYnGJrto-wxuGGL1RPIBpa8qR7cY5735RHEV8'; 
     const SHEET_TITLE = 'productos franye'; 
     const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_TITLE)}`;
-    const NUMERO_WA = "584145611937";
+    const NUMERO_WA = "584120852715";
 
     // --- SELECTORES ---
     const contenedor = document.getElementById('contenedor-productos');
@@ -226,4 +226,5 @@
     window.onclick = (event) => {
         if (event.target == modal) window.cerrarModal();
     };
+
 })();
