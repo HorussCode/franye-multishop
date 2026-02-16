@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Control | Franye Multishop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root { --dorado: #d4af37; --vinotinto: #4a0404; --negro: #111111; --oro-brillante: #f7ef8a; }
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #1a0101 0%, var(--negro) 100%); color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        
+        #login-screen { text-align: center; background: rgba(255,255,255,0.05); padding: 40px; border-radius: 20px; border: 1px solid var(--dorado); backdrop-filter: blur(10px); }
+        .logo-admin { font-family: 'Cinzel', serif; color: var(--dorado); margin-bottom: 20px; font-size: 1.5rem; }
+        
+        .form-container { background: #1a1a1a; padding: 30px; border-radius: 15px; border: 1px solid var(--dorado); width: 100%; max-width: 500px; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        
+        h2 { color: var(--dorado); text-align: center; font-family: 'Cinzel', serif; }
+        label { display: block; margin-top: 15px; font-size: 0.8rem; color: var(--oro-brillante); text-transform: uppercase; letter-spacing: 1px; }
+        input, select, textarea { width: 100%; padding: 12px; margin-top: 5px; border-radius: 8px; border: 1px solid #333; background: #000; color: white; box-sizing: border-box; outline: none; }
+        
+        .btn-accion { background: linear-gradient(to right, #cf9710, #f7ef8a); color: black; border: none; padding: 15px; width: 100%; border-radius: 30px; font-weight: bold; margin-top: 25px; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
+        .btn-accion:hover { transform: scale(1.02); box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+        .btn-accion:disabled { background: #555; cursor: not-allowed; }
+        
+        #mensaje-error { color: #ff4d4d; font-size: 0.8rem; margin-top: 10px; display: none; }
+    </style>
+</head>
+<body>
+
+<div id="login-screen">
+    <div class="logo-admin">FRANYE ADMIN</div>
+    <p style="font-size: 0.9rem; opacity: 0.7;">Introduce la clave de acceso</p>
+    <input type="password" id="pass-input" placeholder="Contraseña..." style="text-align: center; margin-bottom: 10px;">
+    <div id="mensaje-error">Acceso denegado</div>
+    <button class="btn-accion" onclick="verificarAcceso()">Entrar al Panel</button>
+</div>
+
+<div class="form-container" id="admin-panel">
+    <h2>Añadir Producto</h2>
+    <form id="productForm">
+        <label>Nombre del Producto</label>
+        <input type="text" id="nombre" placeholder="Ej. Smartwatch T500" required>
+
+        <div style="display:flex; gap:10px;">
+            <div style="flex:1">
+                <label>Precio Detal ($)</label>
+                <input type="number" step="0.01" id="precio" placeholder="0.00" required>
+            </div>
+            <div style="flex:1">
+                <label>Stock</label>
+                <input type="number" id="stock" value="1" required>
+            </div>
+        </div>
+
+        <label>Categoría</label>
+        <select id="categoria">
+            <option value="Tecnología">Tecnología</option>
+            <option value="Deporte">Deporte</option>
+            <option value="Herramientas">Herramientas</option>
+            <option value="Salud">Salud</option>
+            <option value="Hogar">Hogar</option>
+        </select>
+
+        <label>URL de la Imagen</label>
+        <input type="url" id="imagen" placeholder="Pega el link de la foto aquí" required>
+
+        <label>Descripción</label>
+        <textarea id="descripcion" rows="3" placeholder="Detalles del producto..."></textarea>
+
+        <div style="margin-top:20px; display: flex; align-items: center; gap: 10px;">
+            <input type="checkbox" id="destacado" style="width: 20px; height: 20px; cursor: pointer;"> 
+            <label style="margin: 0; cursor: pointer;" for="destacado">Marcar como producto estrella 🔥</label>
+        </div>
+
+        <button type="submit" class="btn-accion" id="btnSubmit">Publicar Producto</button>
+    </form>
+    <button onclick="cerrarSesion()" style="background: none; border: none; color: #ff4d4d; cursor: pointer; margin-top: 20px; width: 100%; font-size: 0.8rem;">Cerrar Sesión</button>
+</div>
+
+<script>
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyX6gEA0sHgOjjHs6zjHuyPaLPcm-AJ3FYhVczhdn6WSLNZkhKHjTe5Yz8--eVSoaPw/exec"; 
+    const CLAVE_MAESTRA = "Cf120123$#"; 
+
+    function verificarAcceso() {
+        const input = document.getElementById('pass-input').value;
+        const error = document.getElementById('mensaje-error');
+        
+        if(input === CLAVE_MAESTRA) {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('admin-panel').style.display = 'block';
+            sessionStorage.setItem('admin_autenticado', 'true');
+        } else {
+            error.style.display = 'block';
+            setTimeout(() => error.style.display = 'none', 2000);
+        }
+    }
+
+    function cerrarSesion() {
+        sessionStorage.removeItem('admin_autenticado');
+        location.reload();
+    }
+
+    if(sessionStorage.getItem('admin_autenticado') === 'true') {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('admin-panel').style.display = 'block';
+    }
+
+    document.getElementById('productForm').onsubmit = async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('btnSubmit');
+        btn.disabled = true;
+        btn.innerText = "PROCESANDO...";
+
+        const producto = {
+            nombre: document.getElementById('nombre').value,
+            precio: parseFloat(document.getElementById('precio').value),
+            precioMayor: 0,
+            cantidadMayor: 0,
+            imagen: document.getElementById('imagen').value,
+            categoria: document.getElementById('categoria').value,
+            destacado: document.getElementById('destacado').checked,
+            stock: parseInt(document.getElementById('stock').value),
+            descripcion: document.getElementById('descripcion').value
+        };
+
+        try {
+            await fetch(WEB_APP_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify(producto)
+            });
+            
+            alert("✅ ¡Producto publicado con éxito!");
+            document.getElementById('productForm').reset();
+        } catch (err) {
+            alert("❌ Error de conexión: " + err);
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "Publicar Producto";
+        }
+    };
+</script>
+
+</body>
+</html>
